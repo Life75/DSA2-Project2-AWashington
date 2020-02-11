@@ -10,17 +10,20 @@ class Customer
     float arrivalTime;
     float startOfServiceTime;
     float departureTime;
+    Customer* next;
     
     public:
     Customer();
-    
-    float getArrivalTime();
-    float getStartOfServiceTime();
-    float getDepartureTime();
+    Customer(Customer* next);
+    double getArrivalTime();
+    double getStartOfServiceTime();
+    double getDepartureTime();
+    double getTime();
 
     void setArrivalTime(float arrivalTime);
     void setStartOfServiceTime(float startOfServiceTime);
     void setDepartureTime(float departureTime);
-    //Customer* nextCust();
+    Customer* nextCust();
+    
 };
 #endif

@@ -2,19 +2,21 @@
 
 #include<sstream>
 #include<ctime>
+#include <queue>
 
 #include "catch/catch.hpp"
 #include "../Customer.hpp"
+#include "../Heap.hpp"
 
 class MyClass
 {
   public:
-  double getNextRandomInterval(int avg)
+  double getNextRandomInterval(double avg)
   {
     
     srand((unsigned int) time(0));
-    float a = 1.0;
-    double randomNum = (float(rand())/float((RAND_MAX)) * a);
+    double a = 1.0;
+    double randomNum = (double(rand())/double((RAND_MAX)) * a);
 
     double intervalTime = -1 * (1.0/avg) * log(randomNum);
     return intervalTime;
@@ -28,13 +30,37 @@ TEST_CASE("class Customer")
   Customer customer2;
   MyClass test;
 
+  
+  //testing generating averages 
+  double time = 0;
+  Customer* customerArr[50];
+  for(int i =0; i < 50; i++)
+  {
+    double avg = 0;
+    avg = time / i;
+    if(i == 0)
+    {
+      avg = 1;
+    }
+    //std::cout << avg << " " << time << "\n";
+    customerArr[i] = new Customer();
+    double randomNum = test.getNextRandomInterval(avg);
+    std::cout << time << "\n";
+    time += randomNum;
+    customerArr[i]->setArrivalTime(time);
+
+  }
+
+
+ // delete[] customerArr;
+
   double testVal1 = test.getNextRandomInterval(2);
   double testVal2 = test.getNextRandomInterval(3);
   REQUIRE(testVal1 != testVal2);
 
   customer1.setArrivalTime(testVal1);
   customer2.setArrivalTime(testVal2);
-  REQUIRE(customer1.getArrivalTime() != customer2.getArrivalTime());
+  REQUIRE(customer1.getTime() != customer2.getTime());
  // test.getNextRandomInterval(3);
 
 
@@ -43,6 +69,12 @@ TEST_CASE("class Customer")
 
 TEST_CASE("class Heap")
 {
+  //testing how std::queue works 
+  std::queue <Customer*> test; 
+  Customer* cust1;
+  Customer* cust2;
+  test.push(cust1);
+  test.push(cust2);
   //use a pass by reference array to keep the array up to date 
 }
 

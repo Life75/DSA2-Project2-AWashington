@@ -5,9 +5,9 @@
 
 Customer::Customer()
 {
-    arrivalTime  =0;
-    startOfServiceTime = 0;
-    departureTime =0;
+    arrivalTime  = -1;
+    startOfServiceTime = -1;
+    departureTime =-1;
 }
 Customer::Customer(Customer* next)
 {
@@ -42,7 +42,7 @@ Customer* Customer::nextCust()
 
 double Customer::getTime()
 {
-    if(departureTime != 0)
+    if(departureTime != -1)
     {
         return departureTime; 
     }

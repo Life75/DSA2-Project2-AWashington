@@ -3,7 +3,7 @@
 #include<sstream>
 #include<ctime>
 #include <queue>
-
+#include <cstdlib>
 #include "catch/catch.hpp"
 #include "../Customer.hpp"
 #include "../Heap.hpp"
@@ -11,13 +11,14 @@
 class MyClass
 {
   public:
+  //average is mu
   double getNextRandomInterval(double avg)
   {
     
     srand((unsigned int) time(0));
     double a = 1.0;
     double randomNum = (double(rand())/double((RAND_MAX)) * a);
-
+   // std::cout << randomNum << "\n";
     double intervalTime = -1 * (1.0/avg) * log(randomNum);
     return intervalTime;
     
@@ -32,6 +33,7 @@ TEST_CASE("class Customer")
 
   
   //testing generating averages 
+  /*
   double time = 0;
   Customer* customerArr[50];
   for(int i =0; i < 50; i++)
@@ -45,22 +47,22 @@ TEST_CASE("class Customer")
     //std::cout << avg << " " << time << "\n";
     customerArr[i] = new Customer();
     double randomNum = test.getNextRandomInterval(avg);
-    std::cout << time << "\n";
+   // std::cout << time << "\n";
     time += randomNum;
     customerArr[i]->setArrivalTime(time);
 
   }
-
+*/
 
  // delete[] customerArr;
 
-  double testVal1 = test.getNextRandomInterval(2);
-  double testVal2 = test.getNextRandomInterval(3);
-  REQUIRE(testVal1 != testVal2);
+  double testVal1 = test.getNextRandomInterval(1);
+  double testVal2 = test.getNextRandomInterval(1);
+  REQUIRE(testVal1 == testVal2);
 
   customer1.setArrivalTime(testVal1);
   customer2.setArrivalTime(testVal2);
-  REQUIRE(customer1.getTime() != customer2.getTime());
+  REQUIRE(customer1.getTime() == customer2.getTime());
  // test.getNextRandomInterval(3);
 
 
@@ -70,12 +72,136 @@ TEST_CASE("class Customer")
 TEST_CASE("class Heap")
 {
   //testing how std::queue works 
-  std::queue <Customer*> test; 
-  Customer* cust1;
-  Customer* cust2;
-  test.push(cust1);
-  test.push(cust2);
-  //use a pass by reference array to keep the array up to date 
+  std::queue <Customer*> tester;
+  std::queue <Customer*> fifo;
+  MyClass timeInterval;
+  Heap heap;
+  Customer* cust1 = new Customer();
+  cust1->setArrivalTime(1);
+  Customer* cust2 = new Customer();
+  cust2->setArrivalTime(2);
+
+  tester.push(cust1);
+  tester.push(cust2);
+  cust2 = tester.front(); 
+  REQUIRE(1 == cust2->getArrivalTime());
+
+  //
+  //Creating Heap Test
+  //use a pass by reference array to keep the array up to date
+  int serviceChannel = 4;
+  int size = 5;
+  double mu = 2;
+  double time = 0;
+  Customer* customers[5];
+  for(int i = 0; i < size; i++)
+  {
+    time += timeInterval.getNextRandomInterval(mu);
+    customers[i] = new Customer();
+    customers[i]->setArrivalTime(time);
+  }
+
+  heap.buildHeap(customers, size);
+  //heap.printHeap(customers, size);
+  //std::cout << "\n";
+  //should be in the front of the heap
+  Customer* newNode = new Customer();
+  newNode->setArrivalTime(0);
+  heap.insertNode(customers, size, newNode);
+  heap.buildHeap(customers, size);
+//  heap.printHeap(customers, size);
+//  std::cout << "\n";
+
+  newNode = heap.pop(customers, size);
+  //heap.printHeap(customers,size);
+  REQUIRE(0 == newNode->getArrivalTime());
+/*
+  newNode->setArrivalTime(30);
+  heap.insertNode(customers, size, newNode);
+  heap.buildHeap(customers, size);
+  newNode = heap.pop(customers, size);
+  REQUIRE(newNode->getTime() != 30);
+  std::cout << "\n";*/
+//  heap.printHeap(customers, size);
+
+  //heap works, now to test the actual program logic 
+heap.printHeap(customers, size);
+
+//make a build heap before etc 
+// You'll make a dedicated queue for the beginning and push them in the heap array
+std::cout << "\n";
+int i =0;
+double currentTime =0;
+while(size > 0)
+{
+  
+
+
+  if(serviceChannel > 0)
+  {
+    if(fifo.empty())
+    {
+      newNode = heap.pop(customers, size);
+    }
+    else 
+    {
+      newNode = fifo.front();
+      fifo.pop();
+    }
+    
+    if(newNode->getDepartureTime() == -1)
+    {
+      currentTime = newNode->getTime();
+      newNode->setStartOfServiceTime(currentTime);
+      newNode->setDepartureTime(newNode->getStartOfServiceTime() + timeInterval.getNextRandomInterval(mu));
+      heap.insertNode(customers, size, newNode);
+      heap.buildHeap(customers, size);
+      std::cout << newNode->getDepartureTime() << "\n";
+      --serviceChannel; 
+    }
+    else 
+    {
+      //heap.pop(customers, size);
+      ++serviceChannel;
+    }
+    
+  }
+
+  else
+  {
+    newNode = heap.pop(customers, size);
+    //currentTime = newNode->getTime();
+    if(newNode->getDepartureTime() == -1)
+    {
+      fifo.push(newNode);
+    }
+    else 
+    {
+      ++serviceChannel;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+/*
+   for(int i=0; i < size; i++)
+  {
+    if(customers[i]->getDepartureTime() == -1)
+    {
+        std::cout << "This is an arrival: ";
+    }
+    std::cout << customers[i]->getTime() << " \n";
+  }
+*/
 }
 
 TEST_CASE("class Statisitics")

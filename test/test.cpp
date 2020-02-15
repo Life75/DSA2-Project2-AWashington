@@ -7,6 +7,7 @@
 #include "catch/catch.hpp"
 #include "../Customer.hpp"
 #include "../Heap.hpp"
+#include "../Statistics.hpp"
 
 class MyClass
 {
@@ -125,7 +126,7 @@ TEST_CASE("class Heap")
 //  heap.printHeap(customers, size);
 
   //heap works, now to test the actual program logic 
-heap.printHeap(customers, size);
+//heap.printHeap(customers, size);
 
 //make a build heap before etc 
 // You'll make a dedicated queue for the beginning and push them in the heap array
@@ -156,7 +157,7 @@ while(size > 0)
       newNode->setDepartureTime(newNode->getStartOfServiceTime() + timeInterval.getNextRandomInterval(mu));
       heap.insertNode(customers, size, newNode);
       heap.buildHeap(customers, size);
-      std::cout << newNode->getDepartureTime() << "\n";
+      //std::cout << newNode->getDepartureTime() << "\n";
       --serviceChannel; 
     }
     else 
@@ -206,6 +207,30 @@ while(size > 0)
 
 TEST_CASE("class Statisitics")
 {
+  //1
+  Statistics stats(1.0, 2.0 , 3.0, 2.0);
+  REQUIRE(6 == stats.factorial(3.0));
+  float Po = stats.Po();
+  REQUIRE(Po == 0.5);
+
+  //2
+  double L = stats.L();
+  REQUIRE(L == .75);
+
+  //3
+  double W = stats.W();
+  REQUIRE(W == .375);
+
+  //4
+  double Lq = stats.Lq();
+  REQUIRE(Lq == .083);
+
+  //5
+  double Wq = stats.Wq();
+  REQUIRE(Wq == 0.0417);
+
+
+
   //calculate the different statisitcs for the project with the data
   /*
     functions for:
@@ -236,3 +261,8 @@ TEST_CASE("class Statisitics")
 }
 
 
+Test_Case("class Main")
+{
+  // Where you'll test out the functions with the logic that can be applied in main and just simply copy and paste the code 
+
+}

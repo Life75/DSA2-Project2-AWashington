@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -g -std=c++11 -Wall -ftest-coverage -fprofile-arcs
 
 SRCS = $(wildcard *.hpp)
-OBJECTS = Customer.o $(SRCS:%.hpp=%.o) 
+OBJECTS = Customer.o Heap.o  Statistics.o $(SRCS:%.hpp=%.o) 
 
 main: $(OBJECTS) main.o
 	$(CXX) $(CXXFLAGS) -o $@ $^

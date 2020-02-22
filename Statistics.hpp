@@ -11,16 +11,19 @@ class Statistics
         double lambda; // average arrivals in a time period
         double M; //number of service channels
         double mu; //average number seerved in a time period 
+        double PoNum;
 
     public: 
         Statistics();
         Statistics(double numOfArrivals, double lambda, double mu, double M);
         double factorial(double num);
+        void setPo(double PoNum);
         double Po();
         double L();
         double W();
         double Lq();
         double Wq();
+        double Rho();
 
 
 };

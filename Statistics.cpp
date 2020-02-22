@@ -9,6 +9,7 @@ Statistics::Statistics()
     lambda =0;
     mu =0;
     M =0;
+    PoNum =0;
 }
 Statistics::Statistics(double numOfArrivals, double lambda, double mu, double M)
 {
@@ -17,6 +18,8 @@ Statistics::Statistics(double numOfArrivals, double lambda, double mu, double M)
     this->mu = mu;
     this->M = M;
 }
+
+
 
 double Statistics::factorial(double num)
 {   
@@ -46,14 +49,19 @@ double Statistics::Po()
     //std::cout << firstHalf << " " << secondHalf << " " << thirdHalf;
     Po = firstHalf + (secondHalf * thirdHalf);
     Po = 1/Po;
-
+    this->PoNum = Po;
     return Po;
+}
+
+void Statistics::setPo(double PoNum)
+{
+    this->PoNum = PoNum;
 }
 
 double Statistics::L()
 {
     double L =0;
-    double Po = Statistics::Po();
+    double Po = this->PoNum;
     double firstHalf =0;
     double secondHalf =0;
 
@@ -105,5 +113,17 @@ double Statistics::Wq()
     std::string holder = os.str();
     Wq = std::stod(holder);
     return Wq;
+}
+
+double Statistics::Rho()
+{
+    double Rho=0;
+    std::ostringstream os;
+
+    Rho = lambda/(M*mu);
+    os << std::setprecision(2) << Rho;
+    std::string holder = os.str();
+    Rho = std::stod(holder);
+    return Rho;
 }
 

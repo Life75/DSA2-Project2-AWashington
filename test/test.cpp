@@ -19,6 +19,7 @@ class MyClass
     srand((unsigned int) time(0));
     double a = 1.0;
     double randomNum = (double(rand())/double((RAND_MAX)) * a);
+    //std::cout << randomNum << "\n";
    // std::cout << randomNum << "\n";
     double intervalTime = -1 * (1.0/avg) * log(randomNum);
     return intervalTime;
@@ -181,6 +182,7 @@ while(size > 0)
       ++serviceChannel;
     }
   }
+  
 }
 
 
@@ -229,6 +231,8 @@ TEST_CASE("class Statisitics")
   double Wq = stats.Wq();
   REQUIRE(Wq == 0.0417);
 
+  double Rho = stats.Rho();
+  REQUIRE(Rho == .33);
 
 
   //calculate the different statisitcs for the project with the data
@@ -260,9 +264,103 @@ TEST_CASE("class Statisitics")
   */
 }
 
-
-Test_Case("class Main")
+TEST_CASE("class Main")
 {
   // Where you'll test out the functions with the logic that can be applied in main and just simply copy and paste the code 
+  std::queue <Customer*> holder;
+  std::queue <Customer*> fifo;
+  Customer* newNode = new Customer();
+  Heap heap;
 
+  MyClass timeInterval;
+  int sizeArray = 1000;
+  int serviceChannel = 4;
+  double mu = 2;
+  double time = 0;
+  Customer* customers[sizeArray];
+ 
+  for(int i = 0; i < sizeArray; i++)
+  {
+    time += timeInterval.getNextRandomInterval(mu);
+    customers[i] = new Customer();
+    customers[i]->setArrivalTime(time);
+    holder.push(customers[i]);
+  }
+
+  for(int i=0; i < sizeArray; i++)
+  {
+    customers[i] = nullptr;
+  }
+
+
+//testing
+int size = 200;  
+double idleTime =0; 
+double currentTime =0;
+int j = 0;
+while(!holder.empty())
+{
+  for(int i=0; i < size; i++)
+  {
+    customers[i] = holder.front();
+    holder.pop();
+  }
+  int size = 200;
+  j++;
+  idleTime += customers[0]->getArrivalTime() - currentTime; 
+  //std::cout << idleTime << " " << currentTime << "\n"; 
+  while(size > 0)
+{
+  
+  if(serviceChannel > 0)
+  {
+    if(fifo.empty())
+    {
+      newNode = heap.pop(customers, size);
+    }
+    else 
+    {
+      newNode = fifo.front();
+      fifo.pop();
+    }
+    
+    if(newNode->getDepartureTime() == -1)
+    {
+      currentTime = newNode->getTime();
+      newNode->setStartOfServiceTime(currentTime);
+      newNode->setDepartureTime(newNode->getStartOfServiceTime() + timeInterval.getNextRandomInterval(mu));
+      heap.insertNode(customers, size, newNode);
+      heap.buildHeap(customers, size);
+      //std::cout << newNode->getDepartureTime() << "\n";
+      --serviceChannel; 
+    }
+    else 
+    {
+      //heap.pop(customers, size);
+      ++serviceChannel;
+    }
+    
+  }
+
+  else
+  {
+    newNode = heap.pop(customers, size);
+    //currentTime = newNode->getTime();
+    if(newNode->getDepartureTime() == -1)
+    {
+      fifo.push(newNode);
+    }
+    else 
+    {
+      ++serviceChannel;
+    }
+  }
+  
+}
+}
+//std::cout << j << "\n";
+
+
+  
+  
 }

@@ -1,0 +1,3 @@
+This program askes for given values of mu, lambda, the amount of service channels, and the amount of customers wanted to simulate.
+This program acts off of the poisson distribution and gives an analytical model based off that with comparison to the actual
+simulated results in the simulation. The analytical and simulation model with both appear at the end of the program.

@@ -4,7 +4,10 @@
 #include <iostream>
 #include <sstream>
 #include "Customer.hpp"
-
+/*************************************************************************************
+The heap class simply is in charge of creating, ordering, and building the heap through pass by arrays,
+constantly doing multiple and different operations for the heap. 
+**************************************************************************************/
 class Heap
 {
     private:

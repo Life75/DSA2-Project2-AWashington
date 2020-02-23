@@ -10,6 +10,12 @@
 
 double getNextRandomInterval(double avg);
 
+/*************************************************************************************
+Main is the combination of all 3 classes creating the actual simulation. This will create the queue and heap
+and process the statistics of the given information. The function getNextRandomInterval is here to actual
+get the random interval and placed simply in main as a function. The analytical and simulation model with both appear at the end
+with the results.
+**************************************************************************************/
 
 int main() 
 {

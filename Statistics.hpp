@@ -4,6 +4,9 @@
 #include <iostream>
 #include <sstream>
 
+/*************************************************************************************
+Statistics class simply governs the different formulas and able to create those formulas based off given input for the project.
+**************************************************************************************/
 class Statistics 
 {
     private:

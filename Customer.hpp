@@ -3,7 +3,10 @@
 
 #include <iostream>
 #include <sstream>
-//banner
+/*
+Customer class in charge of making the actual customers, this object serves to contain the customer's arrival time, start of service time
+and departure time. The function getTime simply gets the current time and finds if its either a departure event or an arrival event
+*/
 class Customer 
 {
     private:
